@@ -1753,7 +1753,7 @@ identity:
     ## @param identity.keycloak.proxy keycloak proxy
     proxy: edge
 
-    ## keycloak.extraEnvVarsCM defines the name of configmap which store keycloak extra configuration, it's required for keycloak 23+ to set the extra startup args.
+    ## @param identity.keycloak.extraEnvVarsCM configmap for keycloak extra configuration, it's required for keycloak 23+ to set the extra startup args.
     extraEnvVarsCM: >-
       {{ include "identity.fullname" . | replace "keycloak" "identity"}}-config-env-vars
 
