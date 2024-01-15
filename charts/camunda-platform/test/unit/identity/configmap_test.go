@@ -101,3 +101,40 @@ func (s *configMapTemplateTest) TestConfigMapExternalDatabaseEnabled() {
 	s.Require().Equal("my-database-name", configmap.Data["IDENTITY_DATABASE_NAME"])
 	s.Require().Equal("my-database-username", configmap.Data["IDENTITY_DATABASE_USERNAME"])
 }
+
+func (s *configMapTemplateTest) TestConfigMapKeycloak23Enabled() {
+	// given
+	options := &helm.Options{
+		SetValues: map[string]string{
+			"identity.keycloak.image.tag": "23.0.1",
+		},
+		KubectlOptions: k8s.NewKubectlOptions("", "", s.namespace),
+	}
+
+	// when
+	output := helm.RenderTemplate(s.T(), options, s.chartPath, s.release, s.templates)
+	var configmap corev1.ConfigMap
+	helm.UnmarshalK8SYaml(s.T(), output, &configmap)
+
+	// then
+	s.NotEmpty(configmap.Data)
+	s.Require().Equal("--hostname=keycloak.local --hostname-strict-backchannel=false", configmap.Data["KEYCLOAK_EXTRA_ARGS"])
+}
+
+func (s *configMapTemplateTest) TestConfigMapKeycloak22Enabled() {
+	// given
+	options := &helm.Options{
+		SetValues: map[string]string{
+			"identity.keycloak.image.tag": "22.0.1",
+		},
+		KubectlOptions: k8s.NewKubectlOptions("", "", s.namespace),
+	}
+
+	// when
+	output := helm.RenderTemplate(s.T(), options, s.chartPath, s.release, s.templates)
+	var configmap corev1.ConfigMap
+	helm.UnmarshalK8SYaml(s.T(), output, &configmap)
+
+	// then
+	s.Empty(configmap.Data["KEYCLOAK_EXTRA_ARGS"])
+}
