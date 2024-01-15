@@ -1746,12 +1746,15 @@ identity:
       ## @param identity.keycloak.image.repository image repo
       repository: bitnami/keycloak
       ## @param identity.keycloak.image.tag image tag
-      tag: 22.0.5
+      tag: 23.0.4
 
     # Keycloak.proxy defines the proxy mode depends on the TLS termination in your environment.
     # Docs: https://www.keycloak.org/server/reverseproxy
     ## @param identity.keycloak.proxy keycloak proxy
     proxy: edge
+
+    extraEnvVarsCM: >-
+      {{ include "identity.fullname" . | replace "keycloak" "identity"}}-config-env-vars
 
     ## @extra identity.keycloak.tls can be used to enable TLS encryption. Required for HTTPs traffic.
     tls:
@@ -1907,7 +1910,6 @@ identity:
     # in global Ingress is enabled, but it could be overwritten with separate Ingress setup.
     - name: KEYCLOAK_PROXY_ADDRESS_FORWARDING
       value: "{{ .Values.global.ingress.tls.enabled }}"
-
     # under "global.ingress" is enabled. However, it's possible to setup Keycloak on a separate Ingress if needed.
     # For more details: https://github.com/bitnami/charts/tree/main/bitnami/keycloak#configure-ingress
     ingress:
