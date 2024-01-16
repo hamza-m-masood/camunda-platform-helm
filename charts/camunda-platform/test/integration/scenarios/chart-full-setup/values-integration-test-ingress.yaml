@@ -13,9 +13,6 @@ global:
       external-dns.alpha.kubernetes.io/ttl: "60"
 
   identity:
-    keycloak:
-      ingress:
-        hostname: "camunda.example.com"
     auth:
       publicIssuerUrl: "https://{{ .Values.global.ingress.host }}/auth/realms/camunda-platform"
       console:
@@ -30,6 +27,9 @@ global:
         redirectUrl: "https://{{ .Values.global.ingress.host }}/modeler"
 
 identity:
+  keycloak:
+    ingress:
+      hostname: "{{ .Values.global.ingress.host }}"
   contextPath: "/identity"
   fullURL: "https://{{ .Values.global.ingress.host }}/identity"
   firstUser:
