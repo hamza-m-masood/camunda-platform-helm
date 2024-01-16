@@ -29,7 +29,7 @@ global:
 identity:
   keycloak:
     ingress:
-      hostname: "{{ .Values.global.ingress.host }}"
+      hostname: "h4ixyc-gke-1229-upgrade.ci.distro.ultrawombat.com"
   contextPath: "/identity"
   fullURL: "https://{{ .Values.global.ingress.host }}/identity"
   firstUser:

@@ -5,10 +5,6 @@ global:
       # Keycloak externally configured to work with M2M tokens (unlike other components like
       # Operate, Tasklist, and Optimize).
       publicIssuerUrl: http://integration-keycloak/auth/realms/camunda-platform
-identity:
-  keycloak:
-    ingress:
-      hostname: "integration-keycloak"
 webModeler:
   # Web Modeler is disabled by default
   enabled: true
