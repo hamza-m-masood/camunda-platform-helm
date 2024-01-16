@@ -1,5 +1,8 @@
 global:
   identity:
+    keycloak:
+      ingress:
+        hostname: "integration-keycloak"
     auth:
       # NOTE: In Camunda v8.2.0 (apps and Helm chart), WebModeler expects to have
       # Keycloak externally configured to work with M2M tokens (unlike other components like
