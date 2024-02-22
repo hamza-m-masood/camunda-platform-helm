@@ -29,3 +29,6 @@ spec:
     - port: 26500
       protocol: TCP
       name: gateway
+    - port: 8080
+      protocol: TCP
+      name: rest

@@ -210,8 +210,11 @@ Default user and password: "{{ .Values.identity.firstUser.username -}}/{{ .Value
 {{- end }}
 {{- end }}
 
-{{- if index .Values "zeebe-gateway" "ingress" "enabled" }}
-- Zeebe Gateway: grpc://{{ tpl (index .Values "zeebe-gateway" "ingress" "host") $ }}
+{{- if index .Values "zeebe-gateway" "ingress" "grpc" "enabled" }}
+- Zeebe Gateway gRPC URL: grpc://{{ tpl .Values.zeebeGateway.ingress.grpc.host $ }}
+{{- end }}
+{{- if index .Values "zeebe-gateway" "ingress" "rest" "enabled" }}
+- Zeebe Gateway REST URL: {{ $proto }}://{{ tpl .Values.zeebeGateway.ingress.rest.host $ }}
 {{- end }}
 
 {{ if .Values.global.createReleaseInfo -}}

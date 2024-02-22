@@ -52,6 +52,8 @@ spec:
               name: gateway
             - containerPort: 26502
               name: internal
+            - containerPort: 8080
+              name: rest
           env:
             - name: ZEEBE_STANDALONE_GATEWAY
               value: "true"
@@ -67,6 +69,10 @@ spec:
               value: "-XX:+ExitOnOutOfMemoryError"
             - name: ZEEBE_GATEWAY_CLUSTER_INITIALCONTACTPOINTS
               value: camunda-platform-test-zeebe:26502
+            - name: SERVER_ADDRESS
+              value: 0.0.0.0
+            - name: SERVER_PORT
+              value: "8080"
             - name: ZEEBE_GATEWAY_NETWORK_HOST
               value: 0.0.0.0
             - name: ZEEBE_GATEWAY_NETWORK_PORT
