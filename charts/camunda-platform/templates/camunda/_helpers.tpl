@@ -384,7 +384,7 @@ Release templates.
   - name: Zeebe Gateway
     id: zeebeGateway
     version: {{ include "camundaPlatform.imageTagByParams" (dict "base" .Values.global "overlay" .Values.zeebe) }}
-    url: grpc://{{ tpl .Values.zeebeGateway.ingress.host $ }}
+    url: grpc://{{ tpl .Values.zeebeGateway.ingress.grpc.host $ }}
     readiness: {{ printf "%s%s" $baseURLInternal .Values.zeebeGateway.readinessProbe.probePath }}
     metrics: {{ printf "%s%s" $baseURLInternal .Values.zeebeGateway.metrics.prometheus }}
   {{- $baseURLInternal := printf "http://%s.%s:%v" (include "zeebe.names.broker" . | trimAll "\"") .Release.Namespace .Values.zeebe.service.httpPort }}

@@ -214,6 +214,7 @@ Default user and password: "{{ .Values.identity.firstUser.username -}}/{{ .Value
 - Zeebe Gateway gRPC URL: grpc://{{ tpl .Values.zeebeGateway.ingress.grpc.host $ }}
 {{- end }}
 {{- if index .Values "zeebe-gateway" "ingress" "rest" "enabled" }}
+{{ $proto := ternary "https" "http" .Values.zeebeGateway.ingress.rest.tls.enabled -}}
 - Zeebe Gateway REST URL: {{ $proto }}://{{ tpl .Values.zeebeGateway.ingress.rest.host $ }}
 {{- end }}
 
