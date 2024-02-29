@@ -76,6 +76,10 @@ spec:
               value: 0.0.0.0
             - name: ZEEBE_GATEWAY_MONITORING_PORT
               value: {{  .Values.zeebeGateway.service.httpPort | quote }}
+            {{- if .Values.zeebeGateway.contextPath }}
+            - name: SERVER_SERVLET_CONTEXT_PATH
+              value: {{ .Values.zeebeGateway.contextPath | quote }}
+            {{- end }}
             {{- if .Values.global.identity.auth.enabled }}
             - name: CAMUNDA_IDENTITY_TYPE
               value: {{ include "camundaPlatform.authType" . | quote }}
