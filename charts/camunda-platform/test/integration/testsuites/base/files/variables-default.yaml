@@ -9,6 +9,7 @@ preflightVars:
     tasklist: http://integration-tasklist
     connectors: http://integration-connectors:8080
     zeebeGateway: http://integration-zeebe-gateway:9600
+    zeebe: http://integration-zeebe-gateway:8080
     webModelerRestapi: http://integration-web-modeler-restapi:8091
     webModelerWebapp: http://integration-web-modeler-webapp:8071
 
@@ -24,5 +25,6 @@ coreVars:
     connectors: http://integration-connectors:8080/inbound
     webModelerRestapi: http://integration-web-modeler-restapi
     zeebeGateway: integration-zeebe-gateway:26500
+    zeebe: http://integration-zeebe-gateway:8080
   zbctl:
     extraArgs: "--insecure"

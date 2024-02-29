@@ -299,3 +299,18 @@ testcases:
 #     - result.body ShouldContainSubstring web-modeler-restapi
 #     - result.body ShouldContainSubstring zeebe
 #     - result.body ShouldContainSubstring zeebe-gateway
+
+- name: TEST - Zeebe REST API can print node id
+  steps:
+  - name: Call the zeebe rest api endpoint
+    type: http
+    method: GET
+    url: "{{ .coreVars.baseURLs.zeebe }}/api/v1/topology"
+    headers:
+      Content-Type: application/json
+    retry: 4
+    delay: 15
+    assertions:
+    - result.statuscode ShouldEqual 200
+    - result.bodyjson.brokers[0].nodeId ShouldEqual 0
+
