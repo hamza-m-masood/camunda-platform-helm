@@ -68,14 +68,23 @@ zeebe:
 zeebe-gateway:
   image:
     tag: SNAPSHOT
-  ingress-grpc:
-    enabled: true
-    className: nginx
-    host: "zeebe-{{ .Values.global.ingress.host }}"
-    tls:
+  ingress:
+    grpc:
       enabled: true
-      # A wildcard certificate will be used.
-      secretName: camunda-platform-zeebe-gateway-grpc
+      className: nginx
+      host: "zeebe-{{ .Values.global.ingress.host }}"
+      tls:
+        enabled: true
+        # A wildcard certificate will be used.
+        secretName: camunda-platform-zeebe-gateway-grpc
+    rest:
+      enabled: true
+      className: nginx
+      host: "zeebe-rest-{{ .Values.global.ingress.host }}"
+      tls:
+        enabled: true
+        # A wildcard certificate will be used.
+        secretName: camunda-platform-zeebe-gateway-grpc
     annotations:
       external-dns.alpha.kubernetes.io/hostname: "zeebe-{{ .Values.global.ingress.host }}"
       external-dns.alpha.kubernetes.io/ttl: "60"
