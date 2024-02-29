@@ -305,7 +305,7 @@ testcases:
   - name: Call the zeebe rest api endpoint
     type: http
     method: GET
-    url: "http://{{ .coreVars.baseURLs.zeebe }}/api/v1/topology"
+    url: "{{ .coreVars.baseURLs.zeebe }}/api/v1/topology"
     headers:
       Content-Type: application/json
     retry: 4
