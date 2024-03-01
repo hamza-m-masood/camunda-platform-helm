@@ -61,8 +61,6 @@ postgresql:
   enabled: true
 
 zeebe:
-  image:
-    tag: SNAPSHOT
   enabled: true
 
 zeebe-gateway:
