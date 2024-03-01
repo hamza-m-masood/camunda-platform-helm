@@ -34,8 +34,6 @@ identity:
 
 operate:
   contextPath: "/operate"
-  image:
-    tag: SNAPSHOT
 
 optimize:
   contextPath: "/optimize"
