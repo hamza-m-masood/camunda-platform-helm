@@ -58,7 +58,7 @@ global:
     registry: ""
     ## @param global.image.tag defines the tag / version which should be used in the most of the apps.
     # renovate: datasource=github-releases depName=camunda/camunda-platform
-    tag: 8.4.4
+    tag: 8.4.5
     ## @param global.image.pullPolicy defines the image pull policy which should be used https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
     pullPolicy: IfNotPresent
     ## @param global.image.pullSecrets can be used to configure image pull secrets https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
@@ -183,9 +183,11 @@ global:
         # Should be publicly accessible, the default value works if a port-forward to Identity is created to 8085.
         # Can be overwritten if ingress is in use and an external IP is available.
         redirectUrl: "http://localhost:8085"
-        ## @param global.identity.auth.identity.initialUserId defines the initial user id, which is used by Identity to configure mapping rules for the
-        # initial user.
-        initialUserId: ""
+        ## @param global.identity.auth.identity.initialClaimName defines the initial claim name, which is used by Identity to configure initial mapping rules,
+        # defaults to "oid".
+        initialClaimName: "oid"
+        ## @param global.identity.auth.identity.initialClaimValue defines the initial claim value, which is used by Identity to configure initial mapping rules.
+        initialClaimValue:
 
       ## @extra global.identity.auth.operate configuration to configure Operate authentication specifics on global level, which can be accessed by other sub-charts
       operate:
@@ -311,7 +313,7 @@ console:
     ## @param console.image.repository defines which image repository to use
     repository: console/console-sm
     ## @param console.image.tag can be set to overwrite the global tag, which should be used in that chart
-    tag: latest
+    tag: SNAPSHOT
     ## @param console.image.pullSecrets can be used to configure image pull secrets https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
     pullSecrets: []
 
@@ -443,6 +445,8 @@ console:
     name: ""
     ## @param console.serviceAccount.annotations can be used to set the annotations of the Operate service account
     annotations: {}
+    ## @param console.serviceAccount.automountServiceAccountToken can be used to control whether the service account token should be automatically mounted
+    automountServiceAccountToken: false
 
   ingress:
     ## @param console.ingress.enabled if true, an ingress resource is deployed with the Console deployment. Only useful if an ingress controller is available, like nginx.
@@ -597,6 +601,8 @@ zeebe:
     name: ""
     ## @param zeebe.serviceAccount.annotations can be used to set the annotations of the broker service account
     annotations: {}
+    ## @param zeebe.serviceAccount.automountServiceAccountToken can be used to control whether the service account token should be automatically mounted
+    automountServiceAccountToken: false
 
   ## @param zeebe.cpuThreadCount defines how many threads can be used for the processing on each broker pod
   cpuThreadCount: "3"
@@ -990,6 +996,8 @@ zeebe-gateway:
     name: ""
     ## @param zeebe-gateway.serviceAccount.annotations can be used to set the annotations of the gateway service account
     annotations: {}
+    ## @param zeebe-gateway.serviceAccount.automountServiceAccountToken can be used to control whether the service account token should be automatically mounted
+    automountServiceAccountToken: false
 
   ingress:
     grpc:
@@ -1141,6 +1149,8 @@ operate:
     name: ""
     ## @param operate.serviceAccount.annotations can be used to set the annotations of the Operate service account
     annotations: {}
+    ## @param operate.serviceAccount.automountServiceAccountToken can be used to control whether the service account token should be automatically mounted
+    automountServiceAccountToken: false
 
   ingress:
     ## @param operate.ingress.enabled if true, an ingress resource is deployed with the Operate deployment. Only useful if an ingress controller is available, like nginx.
@@ -1342,6 +1352,8 @@ tasklist:
     name: ""
     ## @param tasklist.serviceAccount.annotations can be used to set the annotations of the Tasklist service account
     annotations: {}
+    ## @param tasklist.serviceAccount.automountServiceAccountToken can be used to control whether the service account token should be automatically mounted
+    automountServiceAccountToken: false
 
   ## @extra tasklist.podSecurityContext defines the security options the Tasklist pod should be run with
   podSecurityContext:
@@ -1502,7 +1514,7 @@ optimize:
     repository: camunda/optimize
     ## @param optimize.image.tag can be set to overwrite the global tag, which should be used in that chart
     # renovate: datasource=docker depName=camunda/optimize
-    tag: 8.4.1
+    tag: 8.4.2
     ## @param optimize.image.pullSecrets can be used to configure image pull secrets https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
     pullSecrets: []
 
@@ -1545,6 +1557,8 @@ optimize:
     name: ""
     ## @param optimize.serviceAccount.annotations can be used to set the annotations of the Optimize service account
     annotations: {}
+    ## @param optimize.serviceAccount.automountServiceAccountToken can be used to control whether the service account token should be automatically mounted
+    automountServiceAccountToken: false
 
   ## @extra optimize.service configuration to configure the Optimize service.
   service:
@@ -1893,6 +1907,8 @@ identity:
     name: ""
     ## @param identity.serviceAccount.annotations can be used to set the annotations of the identity service account
     annotations: {}
+    ## @param identity.serviceAccount.automountServiceAccountToken can be used to control whether the service account token should be automatically mounted
+    automountServiceAccountToken: True
 
   ingress:
     ## @param identity.ingress.enabled if true, an ingress resource is deployed with the identity deployment. Only useful if an ingress controller is available, like nginx.
@@ -2276,7 +2292,7 @@ webModeler:
     registry: registry.camunda.cloud
     ## @param webModeler.image.tag can be used to set the Docker image tag for the Web Modeler images (overwrites global.image.tag)
     # renovate: datasource=docker depName=camunda/web-modeler lookupName=registry.camunda.cloud/web-modeler-ee/modeler-restapi
-    tag: 8.4.2
+    tag: 8.4.3
     ## @param webModeler.image.pullSecrets can be used to configure image pull secrets, see https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
     # Note: A secret will be required, if the Web Modeler images are pulled directly from Camunda's private registry.
     #
@@ -2757,6 +2773,8 @@ webModeler:
     name: ""
     ## @param webModeler.serviceAccount.annotations can be used to set the annotations of the Web Modeler service account
     annotations: {}
+    ## @param webModeler.serviceAccount.automountServiceAccountToken can be used to control whether the service account token should be automatically mounted
+    automountServiceAccountToken: false
 
   ingress:
     ## @param webModeler.ingress.enabled if true, an Ingress resource will be deployed with the Web Modeler deployment. Only useful if an Ingress controller like NGINX is available.
@@ -2906,7 +2924,7 @@ connectors:
     ## @param connectors.image.repository defines which image repository to use
     repository: camunda/connectors-bundle
     ## @param connectors.image.tag can be set to overwrite the global tag, which should be used in that chart
-    tag: 8.4.4
+    tag: 8.4.5
     ## @param connectors.image.pullSecrets can be used to configure image pull secrets https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
     pullSecrets: []
 
@@ -3038,6 +3056,8 @@ connectors:
     name: ""
     ## @param connectors.serviceAccount.annotations can be used to set the annotations of the Operate service account
     annotations: {}
+    ## @param connectors.serviceAccount.automountServiceAccountToken can be used to control whether the service account token should be automatically mounted
+    automountServiceAccountToken: false
 
   ingress:
     ## @param connectors.ingress.enabled if true, an ingress resource is deployed with the Connectors deployment. Only useful if an ingress controller is available, like nginx.
