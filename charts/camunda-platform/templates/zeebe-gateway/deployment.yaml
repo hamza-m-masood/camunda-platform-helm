@@ -36,10 +36,12 @@ spec:
           ports:
             - containerPort: {{ .Values.zeebeGateway.service.httpPort }}
               name: {{  default "http" .Values.zeebeGateway.service.httpName }}
-            - containerPort: {{ .Values.zeebeGateway.service.gatewayPort }}
-              name: {{ default "gateway" .Values.zeebeGateway.service.gatewayName  }}
+            - containerPort: {{ .Values.zeebeGateway.service.grpcPort }}
+              name: {{ default "gateway" .Values.zeebeGateway.service.grpcName  }}
             - containerPort: {{ .Values.zeebeGateway.service.internalPort }}
               name: {{ default "internal" .Values.zeebeGateway.service.internalName  }}
+            - containerPort: {{  .Values.zeebeGateway.service.restPort }}
+              name: {{ default "gateway" .Values.zeebeGateway.service.restName  }}
           env:
             - name: ZEEBE_STANDALONE_GATEWAY
               value: "true"
@@ -55,10 +57,14 @@ spec:
               value: {{ .Values.zeebeGateway.javaOpts | quote }}
             - name: ZEEBE_GATEWAY_CLUSTER_INITIALCONTACTPOINTS
               value: {{ tpl .Values.global.zeebeClusterName . }}:{{ .Values.zeebeGateway.service.internalPort }}
+            - name: SERVER_ADDRESS
+              value: 0.0.0.0
+            - name: SERVER_PORT
+              value: {{  .Values.zeebeGateway.service.restPort | quote }}
             - name: ZEEBE_GATEWAY_NETWORK_HOST
               value: 0.0.0.0
             - name: ZEEBE_GATEWAY_NETWORK_PORT
-              value: {{ .Values.zeebeGateway.service.gatewayPort | quote }}
+              value: {{ .Values.zeebeGateway.service.grpcPort | quote }}
             - name: ZEEBE_GATEWAY_CLUSTER_HOST
               valueFrom:
                 fieldRef:
@@ -69,6 +75,10 @@ spec:
               value: 0.0.0.0
             - name: ZEEBE_GATEWAY_MONITORING_PORT
               value: {{ .Values.zeebeGateway.service.httpPort | quote }}
+            {{- if .Values.zeebeGateway.contextPath }}
+            - name: SPRING_WEBFLUX_BASE_PATH
+              value: {{ .Values.zeebeGateway.contextPath | quote }}
+            {{- end }}
             {{- if .Values.global.identity.auth.enabled }}
             - name: CAMUNDA_IDENTITY_TYPE
               value: {{ include "camundaPlatform.authType" . | quote }}
