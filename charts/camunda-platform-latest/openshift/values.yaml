@@ -10,58 +10,49 @@
 ---
 
 #
+# Console.
+#
+console:
+  podSecurityContext:
+    fsGroup: null
+  containerSecurityContext:
+    runAsUser: null
+
+#
 # Identity.
 #
-
-# omit the values below if identity.enabled is false
 identity:
   podSecurityContext:
     fsGroup: null
   containerSecurityContext:
     runAsUser: null
 
-# omit the values below if identityKeycloak.enabled is false
 identityKeycloak:
+  global:
+    compatibility:
+      openshift:
+        adaptSecurityContext: force
   podSecurityContext:
     fsGroup: null
   containerSecurityContext:
     runAsUser: null
-  # omit the values below if identityKeycloak.postgresql.enabled is false
   postgresql:
-    # omit the values below if identityKeycloak.postgresql.primary.enabled is false
-    primary:
-      podSecurityContext:
-        fsGroup: null
-      containerSecurityContext:
-        runAsUser: null
-    # omit the values below if identityKeycloak.postgresql.readReplicas.enabled is false
-    readReplicas:
-      podSecurityContext:
-        fsGroup: null
-      containerSecurityContext:
-        runAsUser: null
-    # omit the values below if identityKeycloak.postgresql.metrics.enabled is false
-    metrics:
-      podSecurityContext:
-        fsGroup: null
-      containerSecurityContext:
-        runAsUser: null
+    global:
+      compatibility:
+        openshift:
+          adaptSecurityContext: force
 
-# omit the values below if identityPostgresql.enabled is false
 identityPostgresql:
-  # omit the values below if identityPostgresql.primary.enabled is false
   primary:
     podSecurityContext:
       fsGroup: null
     containerSecurityContext:
       runAsUser: null
-  # omit the values below if identityPostgresql.readReplicas.enabled is false
   readReplicas:
     podSecurityContext:
       fsGroup: null
     containerSecurityContext:
       runAsUser: null
-  # omit the values below if identityPostgresql.metrics.enabled is false
   metrics:
     podSecurityContext:
       fsGroup: null
@@ -71,8 +62,6 @@ identityPostgresql:
 #
 # Connectors.
 #
-
-# omit the values below if identity.enabled is false
 connectors:
   podSecurityContext:
     fsGroup: null
@@ -82,8 +71,6 @@ connectors:
 #
 # Operate.
 #
-
-# omit the values below if operate.enabled is false
 operate:
   configMap:
     defaultMode: 0444
@@ -95,8 +82,6 @@ operate:
 #
 # Optimize.
 #
-
-# omit the values below if optimize.enabled is false
 optimize:
   podSecurityContext:
     fsGroup: null
@@ -106,8 +91,6 @@ optimize:
 #
 # Tasklist.
 #
-
-# omit the values below if tasklist.enabled is false
 tasklist:
   configMap:
     defaultMode: 0444
@@ -119,8 +102,6 @@ tasklist:
 #
 # WebModeler.
 #
-
-# omit the values below if webModeler.enabled is false
 webModeler:
   restapi:
     podSecurityContext:
@@ -158,8 +139,6 @@ postgresql:
 #
 # Zeebe.
 #
-
-# omit the values below if zeebe.enabled is false
 zeebe:
   configMap:
     defaultMode: 0555
@@ -168,7 +147,6 @@ zeebe:
   containerSecurityContext:
     runAsUser: null
 
-# omit the values below if zeebe-gateway.enabled is false
 zeebeGateway:
   configMap:
     defaultMode: 0444
@@ -180,14 +158,11 @@ zeebeGateway:
 #
 # Elasticsearch.
 #
-
-# omit the values below if elasticsearch.enabled is false
 elasticsearch:
-  master:
-    podSecurityContext:
-      fsGroup: null
-    containerSecurityContext:
-      runAsUser: null
+  global:
+    compatibility:
+      openshift:
+        adaptSecurityContext: force
   # If needed, OpenShift TuneD operator will be used to set sysctl vm.max_map_count.
   # Apply the manifest "openshift-tuned.yaml" before install Camunda 8 chart.
   sysctlImage:

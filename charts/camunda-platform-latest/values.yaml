@@ -37,6 +37,8 @@
 ## @section Global parameters
 ## @extra global
 global:
+  openshift:
+    restrictedSCC: true
   ## Multitenancy configuration.
   ## @extra global.multitenancy
   multitenancy:
@@ -166,7 +168,6 @@ global:
 
   # Identity configuration to configure identity specifics on global level, which can be accessed by other sub-charts
   identity:
-    # THIS IS A PRE ALPHA FEATURE, DO NOT USE IT.
     ## @skip global.identity.service
     service:
       ## @skip global.identity.service.url
@@ -2272,37 +2273,7 @@ identityKeycloak:
     emptyDir:
       sizeLimit: 10Mi
 
-  initContainers:
-  ## @param identityKeycloak.initContainers[0].name
-  ## @param identityKeycloak.initContainers[0].image
-  ## @param identityKeycloak.initContainers[0].imagePullPolicy
-  ## @param identityKeycloak.initContainers[0].command
-  ## @param identityKeycloak.initContainers[0].securityContext.privileged
-  ## @param identityKeycloak.initContainers[0].securityContext.readOnlyRootFilesystem
-  ## @param identityKeycloak.initContainers[0].securityContext.allowPrivilegeEscalation
-  ## @param identityKeycloak.initContainers[0].securityContext.runAsNonRoot
-  ## @param identityKeycloak.initContainers[0].securityContext.runAsUser
-  ## @param identityKeycloak.initContainers[0].securityContext.capabilities.drop
-  ## @param identityKeycloak.initContainers[0].securityContext.seccompProfile.type
-  ## @param identityKeycloak.initContainers[0].volumeMounts[0].name
-  ## @param identityKeycloak.initContainers[0].volumeMounts[0].mountPath
-  - name: copy-camunda-theme
-    image: "{{ .Values.global.identity.image | default \"camunda/identity:latest\" }}"
-    imagePullPolicy: "{{ .Values.global.identity.imagePullPolicy | default \"Always\" }}"
-    command: ["sh", "-c", "cp -a /app/keycloak-theme/* /mnt"]
-    securityContext:
-      privileged: false
-      readOnlyRootFilesystem: true
-      allowPrivilegeEscalation: false
-      runAsNonRoot: true
-      runAsUser: 1001
-      capabilities:
-        drop: ["ALL"]
-      seccompProfile:
-        type: RuntimeDefault
-    volumeMounts:
-    - name: camunda-theme
-      mountPath: /mnt
+  initContainers: []
   ## @param identityKeycloak.extraVolumeMounts[0].name
   ## @param identityKeycloak.extraVolumeMounts[0].mountPath
   ## @param identityKeycloak.extraVolumeMounts[1].mountPath
