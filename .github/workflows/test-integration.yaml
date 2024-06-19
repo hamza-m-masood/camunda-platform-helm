@@ -16,8 +16,27 @@ permissions:
   contents: read
 
 jobs:
+  init:
+    name: Generate chart matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.generate-chart-versions.outputs.matrix }}
+    steps:
+    - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+    - name: Generate chart versions
+      id: generate-chart-versions
+      uses: ./.github/actions/generate-chart-matrix
+      with:
+        charts-path: "charts/camunda-platform-{latest,alpha}*"
+
   test:
-    name: Main
+    if: ${{ needs.init.outputs.matrix != '[]' }}
+    name: Integration Test - ${{ matrix.version }}
+    needs: init
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ${{ fromJson(needs.init.outputs.matrix) }}
     permissions:
       contents: read
       id-token: write
@@ -25,9 +44,9 @@ jobs:
     secrets: inherit
     uses: ./.github/workflows/test-integration-template.yaml
     with:
-      identifier: "${{ github.event.pull_request.number }}"
+      identifier: "${{ github.event.pull_request.number }}-${{ matrix.version }}"
       persistent: "${{ contains(github.event.*.labels.*.name, 'test-persistent') }}"
       platforms: "gke,rosa"
       flows: "install,upgrade"
-      caller-git-ref: ${{ github.event.pull_request.head.sha }}
-      camunda-helm-git-ref: ${{ github.event.pull_request.head.sha }}
+      camunda-helm-dir: "camunda-platform-${{ matrix.version }}"
+      camunda-helm-git-ref: "${{ github.event.pull_request.head.sha }}"
