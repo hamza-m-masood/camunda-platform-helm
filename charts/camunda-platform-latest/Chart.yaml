@@ -63,3 +63,5 @@ annotations:
   artifacthub.io/changes: |
     - kind: added
       description: "add console auth vars"
+    - kind: fixed
+      description: "unauthenticated external elasticsearch no longer forces password…"
