@@ -1,4 +1,6 @@
 global:
+  elasticsearch:
+    enabled: true
   multitenancy:
     enabled: true
   secrets:
@@ -151,6 +153,7 @@ identityPostgresql:
       userPasswordKey: identity-keycloak-postgresql-user-password
 
 elasticsearch:
+  enabled: true
   maxUnavailable: 0
 
 prometheusServiceMonitor:
